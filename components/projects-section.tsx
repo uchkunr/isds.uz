@@ -1,6 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger, useGSAP);
+}
 import {
   Layers,
   FileCheck2,
@@ -43,7 +50,7 @@ interface ProjectItem {
   fullDesc: string;
   categories: ("all" | "universal" | "bank" | "leasing" | "insurance")[];
   categoryLabel: string;
-  icon: React.ElementType;
+  icon: React.ComponentType<{ className?: string }>;
   iconColor: string;
   tags: string[];
   features: string[];
@@ -361,11 +368,62 @@ interface ProjectsSectionProps {
 }
 
 export function ProjectsSection({ onSelectProject }: ProjectsSectionProps) {
+  const sectionRef = useRef<HTMLElement>(null);
   const [activeTab, setActiveTab] = useState<
     "universal" | "bank" | "leasing" | "insurance" | "all"
   >("all");
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(
     null
+  );
+  const [activeProject, setActiveProject] = useState<ProjectItem | null>(null);
+
+  useGSAP(
+    () => {
+      // 1. Header elements blur-reveal
+      gsap.from(".project-header-elem", {
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 82%",
+        },
+        y: 45,
+        opacity: 0,
+        filter: "blur(12px)",
+        scale: 0.96,
+        stagger: 0.12,
+        duration: 0.9,
+        ease: "power3.out",
+        clearProps: "filter,transform",
+      });
+
+      // 2. Filter tabs pills entrance
+      gsap.from(".project-tabs-container", {
+        scrollTrigger: {
+          trigger: ".project-tabs-container",
+          start: "top 85%",
+        },
+        y: 30,
+        opacity: 0,
+        duration: 0.75,
+        ease: "power2.out",
+        clearProps: "transform,opacity",
+      });
+
+      // 3. Project Cards staggered entrance
+      gsap.from(".project-card-item", {
+        scrollTrigger: {
+          trigger: ".projects-grid",
+          start: "top 80%",
+        },
+        y: 55,
+        opacity: 0,
+        scale: 0.94,
+        stagger: 0.07,
+        duration: 0.8,
+        ease: "power3.out",
+        clearProps: "transform,opacity",
+      });
+    },
+    { scope: sectionRef }
   );
 
   const tabs = [
@@ -382,40 +440,44 @@ export function ProjectsSection({ onSelectProject }: ProjectsSectionProps) {
       : allProjects.filter((p) => p.categories.includes(activeTab));
 
   return (
-    <section id="projects" className="py-24 relative">
+    <section ref={sectionRef} id="projects" className="py-24 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="flex flex-col items-center text-center max-w-3xl mx-auto mb-12 space-y-4">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white">
-            Проекты и продукты
+
+
+          <h2 className="project-header-elem text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white">
+            Проекты и{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-400 to-indigo-400">
+              продукты
+            </span>
           </h2>
 
-          <p className="text-base sm:text-lg text-zinc-400 leading-relaxed">
+
+          <p className="project-header-elem text-base sm:text-lg text-zinc-400 leading-relaxed">
             Наши специализированные разработки для лидеров финтех, корпоративного и государственного сектора Узбекистана.
           </p>
         </div>
 
         {/* Filter Tabs Pills */}
-        <div className="flex flex-wrap items-center justify-center gap-2 mb-12">
+        <div className="project-tabs-container flex flex-wrap items-center justify-center gap-2 mb-12">
           {tabs.map((tab) => {
             const isActive = activeTab === tab.id;
             return (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`group flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 cursor-pointer ${
-                  isActive
+                className={`group flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 cursor-pointer ${isActive
                     ? "bg-blue-600 text-white shadow-lg shadow-blue-600/25 scale-105"
                     : "bg-zinc-900/80 text-zinc-400 hover:text-white hover:bg-zinc-800 border border-zinc-800"
-                }`}
+                  }`}
               >
                 <span>{tab.label}</span>
                 <span
-                  className={`text-xs px-2 py-0.5 rounded-full font-mono font-bold ${
-                    isActive
+                  className={`text-xs px-2 py-0.5 rounded-full font-mono font-bold ${isActive
                       ? "bg-white/20 text-white"
                       : "bg-zinc-800 text-zinc-400 group-hover:bg-zinc-700"
-                  }`}
+                    }`}
                 >
                   {tab.count}
                 </span>
@@ -425,14 +487,17 @@ export function ProjectsSection({ onSelectProject }: ProjectsSectionProps) {
         </div>
 
         {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="projects-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredProjects.map((item) => {
             const Icon = item.icon;
             return (
               <Card
                 key={item.id}
-                onClick={() => setSelectedProject(item)}
-                className="group relative cursor-pointer overflow-hidden rounded-2xl bg-zinc-950/70 border border-zinc-800/80 p-6 transition-all duration-300 hover:-translate-y-1.5 hover:border-blue-500/40 hover:shadow-2xl hover:shadow-blue-500/10 flex flex-col justify-between"
+                onClick={() => {
+                  setSelectedProject(item);
+                  setActiveProject(item);
+                }}
+                className="project-card-item group relative cursor-pointer overflow-hidden rounded-2xl bg-zinc-950/70 border border-zinc-800/80 p-6 transition-all duration-300 hover:-translate-y-1.5 hover:border-blue-500/40 hover:shadow-2xl hover:shadow-blue-500/10 flex flex-col justify-between"
               >
                 {/* Glow on hover */}
                 <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-full blur-2xl group-hover:bg-blue-500/15 transition-all pointer-events-none" />
@@ -485,28 +550,35 @@ export function ProjectsSection({ onSelectProject }: ProjectsSectionProps) {
       {/* Project Details Modal */}
       <Dialog
         open={!!selectedProject}
-        onOpenChange={(open) => !open && setSelectedProject(null)}
+        onOpenChange={(open) => {
+          if (!open) setSelectedProject(null);
+        }}
+        onOpenChangeComplete={(open) => {
+          if (!open) setActiveProject(null);
+        }}
       >
-        {selectedProject && (
-          <DialogContent className="sm:max-w-xl bg-zinc-950/95 border-zinc-800 text-zinc-100 shadow-2xl backdrop-blur-2xl">
+        {activeProject && (
+          <DialogContent className="sm:max-w-xl bg-zinc-950/95 border border-blue-500/35 ring-1 ring-blue-500/20 text-zinc-100 shadow-[0_0_40px_-5px_rgba(59,130,246,0.3),0_0_15px_rgba(59,130,246,0.15)] backdrop-blur-2xl overflow-hidden">
+            {/* Subtle top ambient glow inside modal */}
+            <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-3/4 h-24 bg-gradient-to-b from-blue-500/15 via-indigo-500/10 to-transparent blur-xl pointer-events-none -z-10" />
             <DialogHeader>
               <div className="flex items-center gap-3 mb-2">
                 <div
-                  className={`p-2.5 rounded-xl border ${selectedProject.iconColor}`}
+                  className={`p-2.5 rounded-xl border ${activeProject.iconColor}`}
                 >
-                  <selectedProject.icon className="size-5" />
+                  <activeProject.icon className="size-5" />
                 </div>
                 <div>
                   <span className="text-xs font-mono text-zinc-400">
-                    {selectedProject.categoryLabel}
+                    {activeProject.categoryLabel}
                   </span>
                   <DialogTitle className="text-2xl font-bold text-white tracking-tight">
-                    {selectedProject.title}
+                    {activeProject.title}
                   </DialogTitle>
                 </div>
               </div>
               <DialogDescription className="text-zinc-300 text-sm sm:text-base leading-relaxed pt-2">
-                {selectedProject.fullDesc}
+                {activeProject.fullDesc}
               </DialogDescription>
             </DialogHeader>
 
@@ -516,7 +588,7 @@ export function ProjectsSection({ onSelectProject }: ProjectsSectionProps) {
                   Ключевой функционал и преимущества:
                 </h4>
                 <div className="space-y-2">
-                  {selectedProject.features.map((feat, i) => (
+                  {activeProject.features.map((feat, i) => (
                     <div
                       key={i}
                       className="flex items-start gap-2.5 text-sm text-zinc-300"
@@ -533,7 +605,7 @@ export function ProjectsSection({ onSelectProject }: ProjectsSectionProps) {
                   Стек и стандарты:
                 </h4>
                 <div className="flex flex-wrap gap-2">
-                  {selectedProject.tags.map((tag) => (
+                  {activeProject.tags.map((tag) => (
                     <span
                       key={tag}
                       className="text-xs font-mono px-2.5 py-1 rounded bg-zinc-900 border border-zinc-800 text-zinc-300"
@@ -553,7 +625,7 @@ export function ProjectsSection({ onSelectProject }: ProjectsSectionProps) {
                 href="#contact"
                 className="w-full sm:w-auto"
                 onClick={() => {
-                  onSelectProject?.(selectedProject.title);
+                  onSelectProject?.(activeProject.title);
                   setSelectedProject(null);
                 }}
               >

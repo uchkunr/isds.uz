@@ -128,4 +128,36 @@
   html {
     @apply font-sans;
   }
+
+  /* Custom WebKit & Standard Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #07090e;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 9999px;
+    border: 2px solid #07090e;
+    transition: background 0.2s ease;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(59, 130, 246, 0.65);
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.4);
+  }
+
+  ::-webkit-scrollbar-thumb:active {
+    background: rgba(37, 99, 235, 0.9);
+  }
+
+  /* Firefox scrollbar support */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.18) #07090e;
+  }
 }

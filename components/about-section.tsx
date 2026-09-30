@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useRef } from "react";
 import {
   Handshake,
   ShieldCheck,
@@ -14,8 +14,66 @@ import {
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger, useGSAP);
+}
 
 export function AboutSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useGSAP(
+    () => {
+      // 1. Section Header Blur-Reveal
+      gsap.from(".about-header-elem", {
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 82%",
+        },
+        y: 45,
+        opacity: 0,
+        filter: "blur(12px)",
+        scale: 0.96,
+        stagger: 0.14,
+        duration: 0.9,
+        ease: "power3.out",
+        clearProps: "filter,transform",
+      });
+
+      // 2. Credibility Box
+      gsap.from(".about-credibility-box", {
+        scrollTrigger: {
+          trigger: ".about-credibility-box",
+          start: "top 82%",
+        },
+        y: 45,
+        opacity: 0,
+        scale: 0.96,
+        duration: 0.85,
+        ease: "power3.out",
+        clearProps: "transform,opacity",
+      });
+
+      // 3. Core Principles Cards Stagger
+      gsap.from(".about-principle-card", {
+        scrollTrigger: {
+          trigger: ".about-principles-grid",
+          start: "top 80%",
+        },
+        y: 50,
+        opacity: 0,
+        scale: 0.93,
+        stagger: 0.1,
+        duration: 0.8,
+        ease: "power3.out",
+        clearProps: "transform,opacity",
+      });
+    },
+    { scope: sectionRef }
+  );
   const principles = [
     {
       id: "trust",
@@ -60,22 +118,26 @@ export function AboutSection() {
   ];
 
   return (
-    <section id="about" className="py-24 relative overflow-hidden">
+    <section ref={sectionRef} id="about" className="py-24 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         {/* Section Title */}
         <div className="flex flex-col items-center text-center max-w-3xl mx-auto mb-16 space-y-4">
 
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white">
-            Принципы, которых мы придерживаемся
+          <h2 className="about-header-elem text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white">
+            Принципы, которых{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-blue-400 to-cyan-400">
+              мы придерживаемся
+            </span>
           </h2>
 
-          <p className="text-base sm:text-lg text-zinc-400 leading-relaxed">
+
+          <p className="about-header-elem text-base sm:text-lg text-zinc-400 leading-relaxed">
             Мы строим долгосрочные партнерские отношения, опираясь на честность, инженерную культуру и ответственность за каждый байт кода.
           </p>
         </div>
 
         {/* Big Credibility Box: IT-Park resident since 2021 */}
-        <div className="mb-14 rounded-2xl border border-zinc-800 bg-gradient-to-r from-zinc-950 via-zinc-900/90 to-zinc-950 p-6 sm:p-10 shadow-2xl relative overflow-hidden">
+        <div className="about-credibility-box mb-14 rounded-2xl border border-zinc-800 bg-gradient-to-r from-zinc-950 via-zinc-900/90 to-zinc-950 p-6 sm:p-10 shadow-2xl relative overflow-hidden">
           <div className="absolute -right-10 -bottom-10 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
@@ -88,18 +150,18 @@ export function AboutSection() {
                 Специализируемся на проектировании, разработке и сопровождении сложных enterprise-систем: банковский сектор, лизинговые и страховые организации, электронный документооборот, биометрические Face ID комплексы и масштабные ERP решения.
               </p>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
-                <div className="flex items-center gap-2 text-sm text-zinc-300">
+              <div className="flex flex-wrap gap-3 sm:gap-4 pt-2">
+                <div className="flex items-center gap-2 text-sm text-zinc-300 whitespace-nowrap">
                   <CheckCircle className="size-4 text-emerald-400 shrink-0" />
-                  <span>Прозрачный договор и NDA</span>
+                  <span className="whitespace-nowrap">Прозрачный договор и NDA</span>
                 </div>
-                <div className="flex items-center gap-2 text-sm text-zinc-300">
+                <div className="flex items-center gap-2 text-sm text-zinc-300 whitespace-nowrap">
                   <CheckCircle className="size-4 text-emerald-400 shrink-0" />
-                  <span>Стандарты IT-Park</span>
+                  <span className="whitespace-nowrap">Стандарты IT-Park</span>
                 </div>
-                <div className="flex items-center gap-2 text-sm text-zinc-300">
+                <div className="flex items-center gap-2 text-sm text-zinc-300 whitespace-nowrap">
                   <CheckCircle className="size-4 text-emerald-400 shrink-0" />
-                  <span>Выделенные команды сеньоров</span>
+                  <span className="whitespace-nowrap">Выделенные команды сеньоров</span>
                 </div>
               </div>
             </div>
@@ -117,13 +179,13 @@ export function AboutSection() {
         </div>
 
         {/* 4 Core Principles Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="about-principles-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {principles.map((p) => {
             const Icon = p.icon;
             return (
               <Card
                 key={p.id}
-                className="group relative overflow-hidden rounded-2xl bg-zinc-950/80 border border-zinc-800/80 transition-all duration-300 hover:-translate-y-1.5 hover:border-zinc-700 hover:shadow-xl hover:shadow-black/50"
+                className="about-principle-card group relative overflow-hidden rounded-2xl bg-zinc-950/80 border border-zinc-800/80 transition-all duration-300 hover:-translate-y-1.5 hover:border-zinc-700 hover:shadow-xl hover:shadow-black/50"
               >
                 <div
                   className={`absolute top-0 left-0 right-0 h-32 bg-gradient-to-b ${p.color} opacity-40 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none`}

@@ -1,0 +1,76 @@
+import { useRef } from "react";
+import { useFrame } from "@react-three/fiber";
+import { Group } from "three";
+import { OrbitControls } from "@react-three/drei";
+import { Globe } from "../globe";
+import { SceneLights } from "../demos/scene-lights";
+import { GlobeRouteAnimation } from "@/lib/types";
+import { GLOBE_DEFAULTS } from "@/lib/config";
+
+interface RotatingGlobeProps {
+  routes: GlobeRouteAnimation[][];
+  rotationSpeed?: number;
+  paused?: boolean;
+  tilt?: number;
+  sphereColor?: string;
+  dotDensity?: number;
+  dotColor?: string;
+  twinkleStrength?: number;
+  arcColor?: string;
+  pathColor?: string;
+  animationSpeed?: number;
+  ambientIntensity?: number;
+  directionalIntensity?: number;
+}
+
+const RotatingGlobe = ({
+  routes,
+  rotationSpeed = GLOBE_DEFAULTS.rotationSpeed,
+  paused = false,
+  tilt = GLOBE_DEFAULTS.tilt,
+  sphereColor = GLOBE_DEFAULTS.sphereColor,
+  dotDensity = GLOBE_DEFAULTS.dotDensity,
+  dotColor = GLOBE_DEFAULTS.dotColor,
+  twinkleStrength = GLOBE_DEFAULTS.twinkleStrength,
+  arcColor = GLOBE_DEFAULTS.arcColor,
+  pathColor = GLOBE_DEFAULTS.pathColor,
+  animationSpeed = GLOBE_DEFAULTS.animationSpeed,
+  ambientIntensity = GLOBE_DEFAULTS.ambientIntensity,
+  directionalIntensity = GLOBE_DEFAULTS.directionalIntensity,
+}: RotatingGlobeProps) => {
+  const globeRef = useRef<Group>(null);
+
+  useFrame(() => {
+    if (globeRef.current && !paused) {
+      globeRef.current.rotation.y -= rotationSpeed;
+    }
+  });
+
+  return (
+    <>
+      <Globe
+        ref={globeRef}
+        position={[0, 0, 0]}
+        routes={routes}
+        rotation={[tilt, 0, 0]}
+        sphereColor={sphereColor}
+        dotDensity={dotDensity}
+        dotColor={dotColor}
+        twinkleStrength={twinkleStrength}
+        arcColor={arcColor}
+        pathColor={pathColor}
+        animationSpeed={animationSpeed}
+      />
+      <SceneLights ambientIntensity={ambientIntensity} directionalIntensity={directionalIntensity} />
+      <OrbitControls
+        enableZoom={false}
+        enablePan={false}
+        enableDamping
+        dampingFactor={0.1}
+        rotateSpeed={0.5}
+      />
+    </>
+  );
+};
+
+export { RotatingGlobe };

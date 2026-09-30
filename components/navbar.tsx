@@ -31,11 +31,10 @@ export function Navbar({ onOpenCallback }: NavbarProps) {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
-        scrolled
-          ? "bg-zinc-950/85 backdrop-blur-xl border-b border-white/10 shadow-2xl shadow-black/40 py-3"
-          : "bg-transparent py-5"
-      }`}
+      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${scrolled
+        ? "bg-zinc-950/85 backdrop-blur-xl border-b border-white/10 shadow-2xl shadow-black/40 py-3"
+        : "bg-transparent py-5"
+        }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
@@ -44,17 +43,14 @@ export function Navbar({ onOpenCallback }: NavbarProps) {
             href="#"
             className="flex items-center gap-3 group transition-transform duration-200 hover:scale-[1.02]"
           >
-            <div className="relative flex items-center justify-center size-10 rounded-xl bg-zinc-900/90 border border-zinc-800 p-1.5 shadow-lg shadow-blue-500/10 group-hover:border-blue-500/50 transition-colors">
-              <Image
-                src="/favicon.png"
-                alt="ISDS Logo"
-                width={26}
-                height={26}
-                className="object-contain"
-                priority
-              />
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-xl blur-sm opacity-20 group-hover:opacity-60 transition duration-500 -z-10" />
-            </div>
+            <Image
+              src="/favicon.png"
+              alt="ISDS Logo"
+              width={36}
+              height={36}
+              className="h-10 w-auto object-contain transition-transform duration-300 group-hover:scale-105 drop-shadow-[0_0_12px_rgba(59,130,246,0.3)]"
+              priority
+            />
 
             <div className="flex flex-col">
               <div className="flex items-center gap-2">

@@ -1,0 +1,190 @@
+[
+  [
+    {
+      "id": 101,
+      "type": "arc",
+      "label": "Tashkent → Dubai",
+      "path": [[41.2995, 69.2401], [25.2048, 55.2708]],
+      "delay": 0,
+      "duration": 3200,
+      "color": "#38bdf8"
+    },
+    {
+      "id": 102,
+      "type": "arc",
+      "label": "Tashkent → Frankfurt",
+      "path": [[41.2995, 69.2401], [50.1109, 8.6821]],
+      "delay": 1000,
+      "duration": 3400,
+      "color": "#60a5fa"
+    },
+    {
+      "id": 103,
+      "type": "arc",
+      "label": "Tashkent → Seoul",
+      "path": [[41.2995, 69.2401], [37.5665, 126.978]],
+      "delay": 2200,
+      "duration": 3400,
+      "color": "#34d399"
+    },
+    {
+      "id": 104,
+      "type": "arc",
+      "label": "Tashkent → Istanbul",
+      "path": [[41.2995, 69.2401], [41.0082, 28.9784]],
+      "delay": 3600,
+      "duration": 3100,
+      "color": "#818cf8"
+    },
+    {
+      "id": 105,
+      "type": "arc",
+      "label": "Tashkent → Singapore",
+      "path": [[41.2995, 69.2401], [1.3521, 103.8198]],
+      "delay": 4800,
+      "duration": 3500,
+      "color": "#38bdf8"
+    }
+  ],
+  [
+    {
+      "id": 201,
+      "type": "arc",
+      "label": "London → New York",
+      "path": [[51.5074, -0.1278], [40.7128, -74.006]],
+      "delay": 200,
+      "duration": 3200,
+      "color": "#60a5fa"
+    },
+    {
+      "id": 202,
+      "type": "arc",
+      "label": "New York → San Francisco",
+      "path": [[40.7128, -74.006], [37.7749, -122.4194]],
+      "delay": 1400,
+      "duration": 3000,
+      "color": "#38bdf8"
+    },
+    {
+      "id": 203,
+      "type": "arc",
+      "label": "Paris → Sao Paulo",
+      "path": [[48.8566, 2.3522], [-23.5505, -46.6333]],
+      "delay": 2800,
+      "duration": 3600,
+      "color": "#a78bfa"
+    },
+    {
+      "id": 204,
+      "type": "arc",
+      "label": "New York → London",
+      "path": [[40.7128, -74.006], [51.5074, -0.1278]],
+      "delay": 4200,
+      "duration": 3200,
+      "color": "#34d399"
+    },
+    {
+      "id": 205,
+      "type": "arc",
+      "label": "San Francisco → Tokyo",
+      "path": [[37.7749, -122.4194], [35.6762, 139.6503]],
+      "delay": 5400,
+      "duration": 3600,
+      "color": "#60a5fa"
+    }
+  ],
+  [
+    {
+      "id": 301,
+      "type": "arc",
+      "label": "Tokyo → Singapore",
+      "path": [[35.6762, 139.6503], [1.3521, 103.8198]],
+      "delay": 400,
+      "duration": 3200,
+      "color": "#34d399"
+    },
+    {
+      "id": 302,
+      "type": "arc",
+      "label": "Singapore → Sydney",
+      "path": [[1.3521, 103.8198], [-33.8688, 151.2093]],
+      "delay": 1600,
+      "duration": 3400,
+      "color": "#38bdf8"
+    },
+    {
+      "id": 303,
+      "type": "arc",
+      "label": "Hong Kong → Dubai",
+      "path": [[22.3193, 114.1694], [25.2048, 55.2708]],
+      "delay": 3000,
+      "duration": 3300,
+      "color": "#818cf8"
+    },
+    {
+      "id": 304,
+      "type": "arc",
+      "label": "Mumbai → London",
+      "path": [[19.076, 72.8777], [51.5074, -0.1278]],
+      "delay": 4400,
+      "duration": 3500,
+      "color": "#60a5fa"
+    },
+    {
+      "id": 305,
+      "type": "arc",
+      "label": "Sydney → Tokyo",
+      "path": [[-33.8688, 151.2093], [35.6762, 139.6503]],
+      "delay": 5600,
+      "duration": 3400,
+      "color": "#38bdf8"
+    }
+  ],
+  [
+    {
+      "id": 401,
+      "type": "arc",
+      "label": "Dubai → Frankfurt",
+      "path": [[25.2048, 55.2708], [50.1109, 8.6821]],
+      "delay": 600,
+      "duration": 3100,
+      "color": "#38bdf8"
+    },
+    {
+      "id": 402,
+      "type": "arc",
+      "label": "Istanbul → Almaty",
+      "path": [[41.0082, 28.9784], [43.222, 76.8512]],
+      "delay": 1800,
+      "duration": 3200,
+      "color": "#34d399"
+    },
+    {
+      "id": 403,
+      "type": "arc",
+      "label": "London → Johannesburg",
+      "path": [[51.5074, -0.1278], [-26.2041, 28.0473]],
+      "delay": 3200,
+      "duration": 3600,
+      "color": "#818cf8"
+    },
+    {
+      "id": 404,
+      "type": "arc",
+      "label": "Tokyo → Los Angeles",
+      "path": [[35.6762, 139.6503], [34.0522, -118.2437]],
+      "delay": 4600,
+      "duration": 3500,
+      "color": "#60a5fa"
+    },
+    {
+      "id": 405,
+      "type": "arc",
+      "label": "Dubai → Singapore",
+      "path": [[25.2048, 55.2708], [1.3521, 103.8198]],
+      "delay": 5800,
+      "duration": 3200,
+      "color": "#38bdf8"
+    }
+  ]
+]

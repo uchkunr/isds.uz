@@ -1,6 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger, useGSAP);
+}
 import {
   Phone,
   Mail,
@@ -23,12 +30,62 @@ interface ContactSectionProps {
 }
 
 export function ContactSection({ initialSubject }: ContactSectionProps) {
+  const sectionRef = useRef<HTMLElement>(null);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("+998 ");
   const [company, setCompany] = useState("");
   const [message, setMessage] = useState(initialSubject ? `Интересует проект/услуга: ${initialSubject}` : "");
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+
+  useGSAP(
+    () => {
+      // 1. Heading blur reveal
+      gsap.from(".contact-header-elem", {
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 82%",
+        },
+        y: 45,
+        opacity: 0,
+        filter: "blur(12px)",
+        scale: 0.96,
+        stagger: 0.12,
+        duration: 0.9,
+        ease: "power3.out",
+        clearProps: "filter,transform",
+      });
+
+      // 2. Direct contact cards stagger
+      gsap.from(".contact-info-card", {
+        scrollTrigger: {
+          trigger: ".contact-info-list",
+          start: "top 85%",
+        },
+        x: -35,
+        opacity: 0,
+        stagger: 0.1,
+        duration: 0.8,
+        ease: "power3.out",
+        clearProps: "transform,opacity",
+      });
+
+      // 3. Form card smooth slide up
+      gsap.from(".contact-form-card", {
+        scrollTrigger: {
+          trigger: ".contact-form-card",
+          start: "top 85%",
+        },
+        y: 50,
+        opacity: 0,
+        scale: 0.96,
+        duration: 0.85,
+        ease: "power3.out",
+        clearProps: "transform,opacity",
+      });
+    },
+    { scope: sectionRef }
+  );
 
   // Sync if initialSubject changes
   React.useEffect(() => {
@@ -52,7 +109,7 @@ export function ContactSection({ initialSubject }: ContactSectionProps) {
   };
 
   return (
-    <section id="contact" className="py-24 relative overflow-hidden">
+    <section ref={sectionRef} id="contact" className="py-24 relative overflow-hidden">
       {/* Background glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-blue-600/10 rounded-full blur-[150px] pointer-events-none -z-10" />
 
@@ -61,20 +118,26 @@ export function ContactSection({ initialSubject }: ContactSectionProps) {
           {/* Left Column: Heading & Contact Info */}
           <div className="lg:col-span-5 space-y-8">
             <div className="space-y-4">
-              <h2 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-white leading-tight">
-                Давайте работать?
+
+
+              <h2 className="contact-header-elem text-4xl sm:text-5xl font-extrabold tracking-tight text-white leading-tight">
+                Давайте{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400">
+                  работать?
+                </span>
               </h2>
 
-              <p className="text-base sm:text-lg text-zinc-300 leading-relaxed">
+
+              <p className="contact-header-elem text-base sm:text-lg text-zinc-300 leading-relaxed">
                 Расскажите о вашем проекте и в ближайшее время мы свяжемся с вами для обсуждения всех деталей.
               </p>
             </div>
 
             {/* Direct contact cards */}
-            <div className="space-y-4">
+            <div className="contact-info-list space-y-4">
               <a
                 href="tel:+998977112116"
-                className="flex items-center gap-4 p-4 rounded-2xl bg-zinc-950/80 border border-zinc-800/80 hover:border-blue-500/40 transition-all duration-200 group"
+                className="contact-info-card flex items-center gap-4 p-4 rounded-2xl bg-zinc-950/80 border border-zinc-800/80 hover:border-blue-500/40 transition-all duration-200 group"
               >
                 <div className="size-12 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-all">
                   <Phone className="size-5" />
@@ -89,21 +152,8 @@ export function ContactSection({ initialSubject }: ContactSectionProps) {
                 </div>
               </a>
 
-              <div className="flex items-center gap-4 p-4 rounded-2xl bg-zinc-950/80 border border-zinc-800/80">
-                <div className="size-12 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 flex items-center justify-center">
-                  <MapPin className="size-5" />
-                </div>
-                <div>
-                  <div className="text-xs font-medium text-zinc-400">
-                    Локация и статус
-                  </div>
-                  <div className="text-sm font-semibold text-white">
-                    Узбекистан, Ташкент, IT-Park
-                  </div>
-                </div>
-              </div>
 
-              <div className="flex items-center gap-4 p-4 rounded-2xl bg-zinc-950/80 border border-zinc-800/80">
+              <div className="contact-info-card flex items-center gap-4 p-4 rounded-2xl bg-zinc-950/80 border border-zinc-800/80">
                 <div className="size-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center">
                   <Clock className="size-5" />
                 </div>
@@ -118,17 +168,12 @@ export function ContactSection({ initialSubject }: ContactSectionProps) {
               </div>
             </div>
 
-            <div className="p-4 rounded-xl bg-blue-950/20 border border-blue-900/30 text-xs text-zinc-400 flex items-center gap-3">
-              <ShieldCheck className="size-5 text-blue-400 shrink-0" />
-              <span>
-                Гарантируем конфиденциальность. Перед началом обсуждения деталей подписываем NDA.
-              </span>
-            </div>
+
           </div>
 
           {/* Right Column: Interactive Form */}
           <div className="lg:col-span-7">
-            <div className="relative rounded-3xl border border-zinc-800 bg-zinc-950/90 backdrop-blur-2xl p-6 sm:p-10 shadow-2xl">
+            <div className="contact-form-card relative rounded-3xl border border-zinc-800 bg-zinc-950/90 backdrop-blur-2xl p-6 sm:p-10 shadow-2xl">
               {submitted ? (
                 <div className="py-12 flex flex-col items-center justify-center text-center space-y-4 animate-in fade-in duration-300">
                   <div className="size-16 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center">

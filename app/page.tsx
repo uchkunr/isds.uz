@@ -9,6 +9,7 @@ import { ProjectsSection } from "@/components/projects-section";
 import { ContactSection } from "@/components/contact-section";
 import { Footer } from "@/components/footer";
 import { CallbackDialog } from "@/components/callback-dialog";
+import { TriangleInteractiveBackground } from "@/components/triangle-interactive-background";
 
 export default function Home() {
   const [callbackOpen, setCallbackOpen] = useState(false);
@@ -28,11 +29,14 @@ export default function Home() {
 
   return (
     <div className="relative min-h-screen bg-[#07090e] text-zinc-100 flex flex-col selection:bg-blue-600/30 selection:text-blue-300">
+      {/* Full-page interactive glowing triangle pattern background */}
+      <TriangleInteractiveBackground />
+
       {/* Top Navbar */}
       <Navbar onOpenCallback={handleOpenCallback} />
 
       {/* Main Content */}
-      <main className="flex-1 flex flex-col">
+      <main className="flex-1 flex flex-col relative z-10">
         {/* 1. Hero Section */}
         <HeroSection onOpenCallback={handleOpenCallback} />
 

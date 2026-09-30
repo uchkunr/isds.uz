@@ -16,21 +16,29 @@ export function Footer({ onOpenCallback }: FooterProps) {
   };
 
   return (
-    <footer className="border-t border-zinc-800/80 bg-zinc-950 text-zinc-400 text-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <footer className="relative border-t border-zinc-800/80 bg-zinc-950/75 backdrop-blur-xl text-zinc-400 text-sm overflow-hidden">
+      {/* Top glowing gradient border line */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500/40 to-transparent pointer-events-none" />
+
+      {/* Ambient background glows matching header/hero */}
+      <div className="absolute inset-0 max-w-7xl mx-auto pointer-events-none -z-10 overflow-hidden">
+        <div className="absolute -top-16 left-1/4 w-[450px] h-[280px] bg-blue-600/15 rounded-full blur-[120px] mix-blend-screen" />
+        <div className="absolute -top-10 right-1/4 w-[400px] h-[260px] bg-indigo-600/15 rounded-full blur-[130px] mix-blend-screen" />
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[550px] h-[200px] bg-cyan-500/10 rounded-full blur-[100px] mix-blend-screen" />
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
           {/* Col 1 & 2: Brand & IT-Park Status */}
           <div className="lg:col-span-2 space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="flex items-center justify-center size-9 rounded-xl bg-zinc-900 border border-zinc-800 p-1.5 shadow-md shadow-blue-500/10">
-                <Image
-                  src="/favicon.png"
-                  alt="ISDS Logo"
-                  width={22}
-                  height={22}
-                  className="object-contain"
-                />
-              </div>
+            <div className="flex items-center gap-3.5">
+              <Image
+                src="/favicon.png"
+                alt="ISDS Logo"
+                width={36}
+                height={36}
+                className="h-10 w-auto object-contain drop-shadow-[0_0_12px_rgba(59,130,246,0.25)]"
+              />
               <span className="text-xl font-bold tracking-tight text-white">
                 ISDS<span className="text-blue-500">.UZ</span>
               </span>
